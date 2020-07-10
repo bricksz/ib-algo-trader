@@ -12,8 +12,8 @@ import IB_CurrentPositions as ib_positions
 import IB_OpenOrders as ib_openorder
 from IB_OrderType import OrderType
 from utils import check_trading_hours
+from secret_variables.keys import accountID
 
-accountID = "DU2422130"
 ticker = "GLD"
 
 contract = Contract()
