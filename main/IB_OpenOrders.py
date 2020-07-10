@@ -6,6 +6,7 @@ from ibapi.contract import *
 from ibapi.order import Order
 from ibapi.order_state import OrderState
 import logging
+from utils import error_handle
 
 class TestApp(EWrapper, EClient):
     def __init__(self):
@@ -26,7 +27,8 @@ class TestApp(EWrapper, EClient):
     @iswrapper
     def error(self, reqId:TickerId, errorCode:int, errorString:str):
         # print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
-        pass
+        if error_handle(errorCode):
+            self.done = True
 
     @iswrapper
     def openOrder(self, order_id, contract, order, state):

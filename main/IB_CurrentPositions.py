@@ -3,6 +3,8 @@ from ibapi.wrapper import EWrapper
 from ibapi.utils import iswrapper # just for decorator
 from ibapi.common import *
 from ibapi.contract import *
+from utils import error_handle
+
 import pandas as pd
 
 class TestApp(EWrapper, EClient):
@@ -24,8 +26,9 @@ class TestApp(EWrapper, EClient):
 
     @iswrapper
     def error(self, reqId:TickerId, errorCode:int, errorString:str):
-        # print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
-        pass
+        print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
+        if error_handle(errorCode):
+            self.done = True
 
     @iswrapper
     def position(self, account: str, contract: Contract, position: float, avgCost: float):

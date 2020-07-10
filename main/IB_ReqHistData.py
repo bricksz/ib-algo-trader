@@ -3,6 +3,7 @@ from ibapi.wrapper import EWrapper
 from ibapi.utils import iswrapper # just for decorator
 from ibapi.contract import Contract
 from ibapi.common import BarData
+from utils import error_handle
 
 import datetime
 
@@ -34,9 +35,8 @@ class TestApp(EWrapper, EClient):
 
     @iswrapper
     def error(self, reqId, errorCode, errorString):
-        # these messages can come anytime.
-        # print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
-        pass
+        if error_handle(errorCode):
+            self.done = True
 
     def start(self):
         queryTime = (datetime.datetime.today() - datetime.timedelta(days=3)).strftime("%Y%m%d %H:%M:%S")

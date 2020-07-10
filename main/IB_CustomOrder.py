@@ -6,6 +6,7 @@ from ibapi.contract import *
 from ibapi.ticktype import *
 
 from IB_OrderType import OrderType
+from utils import error_handle
 
 class TestApp(wrapper.EWrapper, EClient):
     def __init__(self):
@@ -27,8 +28,9 @@ class TestApp(wrapper.EWrapper, EClient):
 
     @iswrapper
     def error(self, reqId:TickerId, errorCode:int, errorString:str):
-        # print("Error. Id: " , reqId, " Code: " , errorCode , " Msg: " , errorString)
-        pass
+        if error_handle(errorCode):
+            self.done = True
+
     @iswrapper
     def tickPrice(self, reqId: TickerId , tickType: TickType, price: float,
                   attrib:TickAttrib):
@@ -44,7 +46,7 @@ def main(contract, order):
     app.run()
 
 if __name__ == "__main__":
-    ticker = "SPY"
+    ticker = "GLD"
 
     contract = Contract()
     contract.symbol = ticker
